@@ -11,16 +11,24 @@ const messageInput = document.getElementById('message-input');
 
 const name = prompt('What is Your Name?');
 
-appendMessage('you Joined');
+appendMessage(`you Joined as , ${name}`)
 socket.emit('new-User', name);
+console.log(name)
 
 //appending chat message
 socket.on('chat-message', data =>{
-    appendMessage(data);
+    appendMessage(`${data.name}: ${data.message}`);
 });
 //appending joined user name
 socket.on('user-connected', name =>{
     appendMessage (`${name} connected`);
+    console.log(name)
+});
+/*
+user disconnect message
+*/
+socket.on('user-disconnected', name =>{
+    appendMessage (`${name} disconnected`);
 });
 /*
 preventing page from being refreshed and updating
@@ -30,6 +38,7 @@ messageForm.addEventListener('submit', e => {
     e.preventDefault();
     const message = messageInput.value;
     socket.emit('send-chat-message', message);
+    appendMessage(`you: ${message}`);
     messageInput.value = '';
 
 });
@@ -37,6 +46,7 @@ messageForm.addEventListener('submit', e => {
 /* Displaying recieved message*/
 function appendMessage(message){
     const messageElement = document.createElement('div');
+    
     messageElement.innerText = message;
     messageContainer.append(messageElement);
 };
