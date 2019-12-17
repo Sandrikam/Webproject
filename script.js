@@ -46,7 +46,7 @@ messageForm.addEventListener('submit', e => {
 /* Displaying recieved message*/
 function appendMessage(message){
     const messageElement = document.createElement('div');
-    
+    Element.className= 'Message';
     messageElement.innerText = message;
     messageContainer.append(messageElement);
 };
